@@ -13,7 +13,15 @@
             <h3>Input data HP</h3>
             <form action="classify" method="post">{% csrf_token %}
                 <div class="mb-3">
+                    <label for="data_test">Data Test:</label>
                     <input type="text" class="form-control" id="data_test" name="data_test">
+                </div>
+                <div class="mb-3">
+                    <label for="algorithm">Algorithm:</label>
+                    <select class="form-control" id="algorithm" name="algorithm">
+                        <option value="kmeans">K-Means</option>
+                        <option value="knn">K-Nearest Neighbors</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
