@@ -7,49 +7,44 @@ def index(request):
 def classify(request):
     algorithm = request.POST.get('algorithm')  # Mendapatkan pilihan algoritma dari permintaan POST
 
-    if algorithm == 'kmeans':
-        model = joblib.load('static\model_ml\kmeans_model.pkl')
-    elif algorithm == 'knn':
-        model = joblib.load('static/model_ml/model_knn_prediksi_harga_hp.pkl')
-    else:
-        return render(request, 'error.html', {'message': 'Invalid algorithm selection'})  # Menampilkan halaman error jika algoritma tidak valid
-
     data_test = request.POST.get('data_test')
     data_test = data_test.split()
-    array_baru = []
+    array_test = []
     for angka in data_test:
-        array_baru.append(float(angka))
+        array_test.append(float(angka))
 
-    if algorithm == 'kmeans':
-        cluster = model.predict([array_baru])
-
-        if cluster == 0:
-            predict = 'Low Cost'
-        elif cluster == 1:
-            predict = 'Medium Cost'
-        elif cluster == 2:
-            predict = 'High Cost'
-        elif cluster == 3:
-            predict = 'Very High Cost'
-        else:
-            predict = 'Unknown'
-
-    elif algorithm == 'knn':
-        predict = model.predict([array_baru])
-        if predict == 0:
-            predict = 'Low Cost'
-        elif predict == 1:
-            predict = 'Medium Cost'
-        elif predict == 2:
-            predict = 'High Cost'
-        elif predict == 3:
-            predict = 'Very High Cost'
-        else:
-            predict = 'Unknown'
-
-    else:
-        return render(request, 'error.html', {'message': 'Invalid algorithm selection'})  # Menampilkan halaman error jika algoritma tidak valid
-
+    match algorithm:
+        case 'kmeans':
+            model = joblib.load('static\model_ml\kmeans_model.pkl')
+            cluster = model.predict([array_test])
+            match cluster:
+                case 0:
+                    predict = 'Low Cost'
+                case 1:
+                    predict = 'Medium Cost'
+                case 2:
+                    predict = 'High Cost'
+                case 3:
+                    predict = 'Very High Cost'
+                case _:
+                    predict = 'Unknown'
+        case 'knn':
+            model = joblib.load('static\model_ml\model_knn_prediksi_harga_hp.pkl')
+            predict = model.predict([array_test])
+            match predict:
+                case 0:
+                    predict = 'Low Cost'
+                case 1:
+                    predict = 'Medium Cost'
+                case 2:
+                    predict = 'High Cost'
+                case 3:
+                    predict = 'Very High Cost'
+                case _:
+                    predict = 'Unknown'
+        case _:
+            return render(request, 'error.html', {'message': 'Invalid algorithm selection'})  # Menampilkan halaman error jika algoritma tidak valid
+        
     context = {
         'predict': predict,
     }
