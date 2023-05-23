@@ -36,9 +36,11 @@
     <div class="container">
     {% block content %}
     <div class="row">
-        <div class="col-6 my-5 mx-auto">
+        <div class="col-8 my-5 mx-auto">
             <div class="card  shadow">
-                <h3 class="card-header text-center mb-3">Input Data HP</h3>
+                <div class="card-header mb-3">
+                    <h3 class="card-title text-center">Input Data HP</h3>
+                </div>
                 <div class="card-body">
                     <form action="classify" method="post">{% csrf_token %}
                         <div class="mb-3">
@@ -48,10 +50,11 @@
                         <div class="mb-3">
                             <label for="algorithm">Pilih algoritma:</label>
                             <select class="form-control dropdown" id="algorithm" name="algorithm">
-                                <option value="kmeans">K-Means</option>
                                 <option value="knn">K-Nearest Neighbors</option>
                                 <option value="dt">Decision Tree</option>
                                 <option value="rf">Regression Forest</option>
+                                <option value="nb">Naive Bayes</option>
+                                <option value="kmeans">K-Means</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary mb-3">Submit</button>
